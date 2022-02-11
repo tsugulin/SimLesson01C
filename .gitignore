@@ -5,4 +5,3 @@ simulations/.qtenvrc
 .oppbuildspec
 .project
 *.exe
-/Makefile
