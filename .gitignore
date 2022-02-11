@@ -1,0 +1,8 @@
+.settings/
+out/
+simulations/results/
+simulations/.qtenvrc
+.oppbuildspec
+.project
+*.exe
+/Makefile
