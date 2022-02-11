@@ -1,4 +1,4 @@
 #!/bin/sh
 cd `dirname $0`
-../src/simwork00 -n .:../src $*
-# for shared lib, use: opp_run -l ../src/simwork00 -n .:../src $*
+../src/simlesson01c -n .:../src $*
+# for shared lib, use: opp_run -l ../src/simlesson01c -n .:../src $*
