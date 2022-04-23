@@ -5,6 +5,8 @@ void Queue::initialize()
 {
    queue.setName("queue");              // 待ち行列に名前をつける
    max = par("forkNumber").intValue();  // 分岐数
+   for (int i = 0; i < max; i++)  nxt[i] = 0;      // 各医師の診療状況をリセット
+   WATCH_MAP(nxt);                                 // 各医師の診療状況を監視
 }
 
 void Queue::handleMessage(cMessage *msg)
