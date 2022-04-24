@@ -7,13 +7,15 @@ using namespace omnetpp;
 class Queue : public cSimpleModule
 {
   private:
-    int max;    // 次ノード分岐数
+    int max;    // 分岐数を表す
+    int nxt;    // 医師の待ち状況を表す
     cQueue queue;
     cLongHistogram waitTime;
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    virtual void forward(int);
     virtual void finish();
 };
 

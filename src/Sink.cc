@@ -4,32 +4,24 @@ Define_Module(Sink);
 void Sink::initialize()
 {
     onWorking = false;  // 現在は空いている
-    docNumber = (strcmp(getFullName(), "doctor[0]") == 0) ? 0: 1;   // ドクター番号
 }
 
 void Sink::handleMessage(cMessage *msg)
 {
     if (msg->isSelfMessage()) {
-        onWorking = false;
-        forwardMessage();                   // 患者の処置が終わったので，次の患者を呼び出す
+        onWorking = false;              // 診察終了
+        send(new cMessage("call"), "out");                      // 患者の処置が終わったので，次の患者を呼び出す
         leadTime.collect(simTime() - msg->getCreationTime());   // リードタイムを記録
         delete msg;                                             // 患者メッセージを削除
     } else {
         if (strcmp(msg->getName(), "patient") == 0) {
             onWorking = true;                                   // 診察中
-            scheduleAt(simTime() + par("intervalTime"), msg);   // 診療時間は平均値8分のポアソン分布に従う
+            scheduleAt(simTime() + par("serviceTime"), msg);    // 診療時間は平均値8分のポアソン分布に従う
         } else if (strcmp(msg->getName(), "request") == 0) {
             delete msg;
-            if (!onWorking) forwardMessage();       // 空いていれば次の患者を呼び出す
+            if (!onWorking) send(new cMessage("call"), "out");  // 空いていれば次の患者を呼び出す
         }
     }
-}
-
-void Sink::forwardMessage()
-{
-    cMessage *callmsg = new cMessage("call");   // 呼び出しメッセージを作成
-    callmsg->setKind(docNumber);                // ドクター番号をセット
-    send(callmsg, "out");                       // 次の患者を呼び出す
 }
 
 void Sink::finish()
